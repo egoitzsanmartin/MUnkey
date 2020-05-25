@@ -1,4 +1,4 @@
-package app;
+package src.app;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -27,7 +27,7 @@ public class MensajeDirecto extends JFrame implements ActionListener{
 		this.setSize (800,600);
 		this.setLocation(200+(id*400),200);
 		this.setContentPane(crearPanelVentana());
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
 		this.setVisible(true);
 	}

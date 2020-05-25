@@ -1,4 +1,4 @@
-package app;
+package src.app;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -37,6 +37,10 @@ public class Controlador implements ActionListener, PropertyChangeListener {
 			principal.revalidate();
 		}
 		if(e.getActionCommand().contentEquals("perfil")) {
+			principal.setContentPane(new Perfil(this));
+			principal.revalidate();
+		}
+		if(e.getActionCommand().contentEquals("md")) {
 			new MensajeDirecto(this);
 			principal.revalidate();
 		}
