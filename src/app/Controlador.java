@@ -1,4 +1,4 @@
-package src.app;
+package app;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,12 +8,20 @@ import java.beans.PropertyChangeSupport;
 
 import javax.swing.JFrame;
 
-import app.Menu;
+import objetos.Comentarios;
+import objetos.Likes;
+import objetos.ListaChats;
+import objetos.Obras;
+import objetos.Usuarios;
 
 
 public class Controlador implements ActionListener, PropertyChangeListener {
 	JFrame principal;
-
+	Usuarios listaUsuarios;
+	Obras listaObras;
+	Likes listaLikes;
+	Comentarios listaComentarios;
+	ListaChats listaChats;
 	
 	PropertyChangeSupport soporte;
 	
@@ -21,6 +29,11 @@ public class Controlador implements ActionListener, PropertyChangeListener {
 		this.principal = principal;
 		this.principal.setContentPane(new Menu(this));
 		this.soporte = new PropertyChangeSupport(this);
+		listaUsuarios=new Usuarios();
+		listaObras=new Obras();
+		listaLikes=new Likes();
+		listaComentarios=new Comentarios();
+		listaChats=new ListaChats();
 		principal.revalidate();
 	}
 
@@ -33,6 +46,10 @@ public class Controlador implements ActionListener, PropertyChangeListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand().contentEquals("entrar")) {
+			principal.setContentPane(new Base(this));
+			principal.revalidate();
+		}
+		if(e.getActionCommand().contentEquals("home")) {
 			principal.setContentPane(new Base(this));
 			principal.revalidate();
 		}

@@ -1,4 +1,4 @@
-package src.app;
+package app;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -23,6 +23,7 @@ public class Perfil extends JPanel {
 		this.controlador = controlador;
 		this.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 		this.add(crearBotonesCentro(), BorderLayout.CENTER);
+		this.add(panelAbajo(), BorderLayout.SOUTH);
 	}
 	
 	public Component panelVacio() {
@@ -33,6 +34,22 @@ public class Perfil extends JPanel {
 		return panel;
 	}
 	
+	public Component panelAbajo() {
+		JPanel panel = new JPanel(new BorderLayout());
+		panel.setBorder(BorderFactory.createEmptyBorder(10, 20, 30, 20));
+		panel.setOpaque(false);
+		JButton home = new JButton(new ImageIcon("art/botones/home.png"));
+		home.addActionListener(controlador);
+		home.setActionCommand("home");
+		home.setToolTipText("Vuelve al menu principal");
+		home.setContentAreaFilled(false);
+		home.setBorderPainted(false);
+		
+		panel.add(home, BorderLayout.WEST);
+		
+		return panel;
+	}
+	
 	private Component crearBotonesCentro() {
 		JPanel panel = new JPanel(new GridLayout(1, 5, 20, 40));
 		panel.setBorder(BorderFactory.createEmptyBorder(10, 0, 30, 20));
@@ -40,18 +57,21 @@ public class Perfil extends JPanel {
 		JButton fav = new JButton(new ImageIcon("art/botones/fav.png"));
 		fav.addActionListener(controlador);
 		fav.setActionCommand("favoritas");
+		fav.setToolTipText("Una lista de las obras que más te han gustado");
 		fav.setContentAreaFilled(false);
 		fav.setBorderPainted(false);
 		
 		JButton misObras = new JButton(new ImageIcon("art/botones/misObras.png"));
 		misObras.addActionListener(controlador);
 		misObras.setActionCommand("misObras");
+		misObras.setToolTipText("La lista de las obras que has compartido con la comunidad");
 		misObras.setContentAreaFilled(false);
 		misObras.setBorderPainted(false);
 		
 		JButton md = new JButton(new ImageIcon("art/botones/md.png"));
 		md.addActionListener(controlador);
 		md.setActionCommand("md");
+		md.setToolTipText("Mira las conversaciones que has tenido con las editoriales");
 		md.setContentAreaFilled(false);
 		md.setBorderPainted(false);
 		

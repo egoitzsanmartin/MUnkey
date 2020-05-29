@@ -1,4 +1,4 @@
-package src.app;
+package app;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -40,6 +40,7 @@ public class Base extends JPanel {
 		JButton boton = new JButton(new ImageIcon("art/botones/subir.png"));
 		boton.addActionListener(controlador);
 		boton.setActionCommand("subir");
+		boton.setToolTipText("Comparte tus obras con la comunidad");
 		boton.setContentAreaFilled(false);
 		boton.setBorderPainted(false);
 		
@@ -55,6 +56,7 @@ public class Base extends JPanel {
 		JButton perfil = new JButton(new ImageIcon("art/botones/perfil.png"));
 		perfil.addActionListener(controlador);
 		perfil.setActionCommand("perfil");
+		perfil.setToolTipText("Tu perfil");
 		perfil.setContentAreaFilled(false);
 		perfil.setBorderPainted(false);
 		
@@ -88,12 +90,14 @@ public class Base extends JPanel {
 		JButton obrasTop = new JButton(new ImageIcon("art/botones/top.png"));
 		obrasTop.addActionListener(controlador);
 		obrasTop.setActionCommand("top");
+		obrasTop.setToolTipText("Una lista de las obras más populares del momento");
 		obrasTop.setContentAreaFilled(false);
 		obrasTop.setBorderPainted(false);
 		
 		JButton obrasRandom = new JButton(new ImageIcon("art/botones/random.png"));
 		obrasRandom.addActionListener(controlador);
 		obrasRandom.setActionCommand("random");
+		obrasRandom.setToolTipText("Una obra aleatoria. Ideal si no sabes que leer");
 		obrasRandom.setContentAreaFilled(false);
 		obrasRandom.setBorderPainted(false);
 		

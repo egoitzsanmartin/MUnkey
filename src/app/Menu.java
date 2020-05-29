@@ -1,4 +1,4 @@
-package src.app;
+package app;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -10,14 +10,12 @@ import java.awt.GridLayout;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import javax.swing.UIManager;
 
-import app.Controlador;
+import objetos.Usuarios;
 
 
 
@@ -25,11 +23,15 @@ public class Menu extends JPanel {
 	Controlador controlador;
 	JTextField usuario;
 	JPasswordField contraseña;
+	Usuarios listaUsuarios;
 	
 	public Menu(Controlador controlador) {
 		super(new BorderLayout());
 		this.controlador = controlador;
 		this.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+		
+		//listaUsuarios=new Usuarios();
+		
 		this.add(crearPanelDatos(), BorderLayout.WEST);
 		//this.add(crearPanelBoton(), BorderLayout.SOUTH);
 	}
@@ -38,9 +40,6 @@ public class Menu extends JPanel {
 		JPanel panel = new JPanel(new GridLayout(6, 1, 0, 70));
 		panel.setBorder(BorderFactory.createEmptyBorder(90, 40, 30, 150));
 		panel.setOpaque(false);
-		JButton boton = new JButton("Jugar");
-		boton.addActionListener(controlador);
-		boton.setActionCommand("jugar");
 		panel.add(panelVacio());
 		panel.add(crearPanelUsuario());
 		panel.add(crearPanelContraseña());

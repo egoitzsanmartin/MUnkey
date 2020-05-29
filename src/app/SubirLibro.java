@@ -1,4 +1,4 @@
-package src.app;
+package app;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -56,6 +56,7 @@ public class SubirLibro extends JDialog{
 	private Container crearPanelVentana() {
 		JPanel panel = new JPanel(new BorderLayout(20, 20));
 		panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		panel.setBackground(new java.awt.Color(44, 44, 40, 255));
 		panel.add(crearPanelNorte(), BorderLayout.NORTH);
 		panel.add(crearPanelCentro(), BorderLayout.CENTER);
 		panel.add(crearPanelSur(), BorderLayout.SOUTH);
@@ -91,12 +92,13 @@ public class SubirLibro extends JDialog{
 		
 		portada = new JLabel("Portada:");
 		portada.setFont(new Font ("myriad pro", Font.BOLD, 20));
+		portada.setForeground(Color.ORANGE);
 		panelCentro.add(portada);
 		
 		portada2 = new JTextField();
 		portada2.setFont(new Font ("myriad pro", Font.BOLD, 12));
-		portada2.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-		portada2.setBackground(Color.GRAY);
+		portada2.setBorder(BorderFactory.createLineBorder(Color.ORANGE));
+		portada2.setBackground(Color.ORANGE);
         portada2.setToolTipText("Inserta la ruta de la portada");
         panelCentro.add(portada2);
         
@@ -114,12 +116,13 @@ public class SubirLibro extends JDialog{
         });
         pdf = new JLabel("Obra (PDF):");
 		pdf.setFont(new Font ("myriad pro", Font.BOLD, 20));
+		pdf.setForeground(Color.ORANGE);
 		panelCentro.add(pdf);
 		
 		pdf2 = new JTextField();
 		pdf2.setFont(new Font ("myriad pro", Font.BOLD, 12));
-		pdf2.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-		pdf2.setBackground(Color.GRAY);
+		pdf2.setBorder(BorderFactory.createLineBorder(Color.ORANGE));
+		pdf2.setBackground(Color.ORANGE);
         pdf2.setToolTipText("Inserta la ruta del PDF");
         panelCentro.add(pdf2);
        
@@ -176,22 +179,24 @@ public class SubirLibro extends JDialog{
 		panelNorte.setBorder(BorderFactory.createEmptyBorder(10, 5, 0, 5));
 		titulo = new JLabel("Titulo:");
 		titulo.setFont(new Font ("myriad pro", Font.BOLD, 20));
+		titulo.setForeground(Color.ORANGE);
 		panelNorte.add(titulo);
 		
 		nombree = new JTextField();
 		nombree.setFont(new Font ("myriad pro", Font.BOLD, 20));
-		nombree.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-		nombree.setBackground(Color.GRAY);
+		nombree.setBorder(BorderFactory.createLineBorder(Color.ORANGE));
+		nombree.setBackground(Color.ORANGE);
 		panelNorte.add(nombree);
 		
 		genero = new JLabel("Género:");
 		genero.setFont(new Font ("myriad pro", Font.BOLD, 20));
+		genero.setForeground(Color.ORANGE);
 		panelNorte.add(genero);
 		
 		generoo = new JComboBox<>(tipos);
 		generoo.setFont(new Font ("myriad pro", Font.BOLD, 20));
-		generoo.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-		generoo.setBackground(Color.GRAY);
+		generoo.setBorder(BorderFactory.createLineBorder(Color.ORANGE));
+		generoo.setBackground(Color.ORANGE);
 		panelNorte.add(generoo);
 		
 		return panelNorte;
