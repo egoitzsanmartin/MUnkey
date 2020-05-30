@@ -15,6 +15,12 @@ public class Obras {
 		listaObras=con.cargarDatosObras();
 	}
 
+	
+	public List<Obra> getListaObras() {
+		return listaObras;
+	}
+
+
 	public boolean add (Obra obra) {
 		listaObras.add(obra);
 		return true;

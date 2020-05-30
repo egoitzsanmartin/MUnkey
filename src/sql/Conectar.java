@@ -55,6 +55,23 @@ public List<Usuario> cargarDatosUsuarios() {
 	return listaUsuarios;
 }
 
+public void guardarDatosUsuarios(Usuario usuario) {
+	Conectar cn=new Conectar();
+	Statement st;
+	ResultSet rs;
+	String accion="INSERT into usuario VALUES" + "('"+usuario.getUsername()+"','"+usuario.getNombre()+"','"+
+			usuario.getCorreo()+"','"+usuario.getTipo()+"','art/mono.png','"+usuario.getPassword()+"')";
+	try {
+		st=cn.con.createStatement();
+		st.executeUpdate(accion);
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+
+
+}
+
 public List<Obra> cargarDatosObras() {
 	Conectar cn=new Conectar();
 	Statement st;

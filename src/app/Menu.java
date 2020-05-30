@@ -105,7 +105,14 @@ public class Menu extends JPanel {
 		boton.setContentAreaFilled(false);
 		boton.setBorderPainted(false);
 		
+		JButton boton2 = new JButton(new ImageIcon("art/botones/registrar.png"));
+		boton2.addActionListener(controlador);
+		boton2.setActionCommand("nuevaCuenta");
+		boton2.setContentAreaFilled(false);
+		boton2.setBorderPainted(false);
+		
 		panel.add(boton, BorderLayout.WEST);
+		panel.add(boton2, BorderLayout.EAST);
 		
 		return panel;
 	}

@@ -31,22 +31,27 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class SubirLibro extends JDialog{
 
-	String [] tipos = {"Comedia", "Miedo", "Acción", "Policíaca", "Fantástica", "Ciencia ficción", "otros"};
+	String [] tipos = {"Novela: Comedia", "Novela: Miedo", "Novela: Acción", "Novela: Policíaca", "Novela: Fantástica", 
+			"Novela: Ciencia ficción","Novela: Histórica", "Novela: otros","Cómic: Comedia", "Cómic: Miedo", 
+			"Cómic: Acción", "Cómic: Policíaco", "Cómic: Fantástico", "Cómic: Ciencia ficción","Cómic: Histórico", "Cómic: otros",
+			"Manga: Kodomo","Manga: Shonen","Manga: Shojo","Manga: Sheinen","Manga: Josei","Manga: Spokkon", "Manga: Mechas", "Manga: Otros",
+			"Cocina", "Bricolaje", "Motor", "Noticias", "Científico", "Estudios","Filosofía","Historia","Poesia","Arte","Nuevas tecnologías","Otros"};
+	String [] idiomas= {"ingles","español","italiano", "alemán", "frances","chino","japones","ruso","portugues", "euskera", "catalán"};
 	String extension = "*.TXT, txt";
-	JLabel titulo, nombre, genero, pdf, portada;
+	JLabel titulo, nombre, genero,idioma, pdf, portada;
 	JButton cancelar, aceptar, seleccionar, seleccionar2;
 	//Libro libro;
 	Controlador controlador;
 	JFileChooser portada1, pdf1;
 	FileNameExtensionFilter filtroPortada, filtroPdf;
-	JComboBox generoo;
+	JComboBox generoo, idiomaa;
 	JTextField nombree, portada2, pdf2;
 	
 	public SubirLibro(Controlador controlador)
 	{
 		super(new JDialog());
 		this.controlador = controlador;
-		this.setSize(830,330);
+		this.setSize(830,430);
 		this.setLocation(300,150);
 		this.setContentPane(crearPanelVentana());
 		this.setVisible(true);
@@ -111,7 +116,7 @@ public class SubirLibro extends JDialog{
             
         seleccionar.addActionListener(new ActionListener(){
             public void actionPerformed (ActionEvent e){
-                seleccionar("JPG", "jpg", panelCentro, portada2);
+                seleccionar("png", "png", panelCentro, portada2);
             }
         });
         pdf = new JLabel("Obra (PDF):");
@@ -174,7 +179,7 @@ public class SubirLibro extends JDialog{
 	};
 
 	private Component crearPanelNorte() {
-		JPanel panelNorte = new JPanel(new GridLayout(2, 2, 40, 10));
+		JPanel panelNorte = new JPanel(new GridLayout(3, 2, 40, 10));
 		panelNorte.setOpaque(false);
 		panelNorte.setBorder(BorderFactory.createEmptyBorder(10, 5, 0, 5));
 		titulo = new JLabel("Titulo:");
@@ -199,13 +204,32 @@ public class SubirLibro extends JDialog{
 		generoo.setBackground(Color.ORANGE);
 		panelNorte.add(generoo);
 		
+		idioma = new JLabel("Idioma:");
+		idioma.setFont(new Font ("myriad pro", Font.BOLD, 20));
+		idioma.setForeground(Color.ORANGE);
+		panelNorte.add(idioma);
+		
+		idiomaa = new JComboBox<>(idiomas);
+		idiomaa.setFont(new Font ("myriad pro", Font.BOLD, 20));
+		idiomaa.setBorder(BorderFactory.createLineBorder(Color.ORANGE));
+		idiomaa.setBackground(Color.ORANGE);
+		panelNorte.add(idiomaa);
 		return panelNorte;
 	}
 	
-	void hola() {
-		
- 
+	public String leerTitulo(){
+		return nombree.getText();
 	}
-
-
+	public String leerPortada(){
+		return portada2.getText();
+	}
+	public String leerPDF(){
+		return pdf2.getText();
+	}
+	public String leerGenero(){
+		return generoo.getSelectedItem().toString();
+	}
+	public String leerIdioma(){
+		return idiomaa.getSelectedItem().toString();
+	}
 }
