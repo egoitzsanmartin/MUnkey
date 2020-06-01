@@ -34,6 +34,21 @@ public class Usuarios{
 		return valido;
 		}
 		
+		public Usuario escogerUsuario(String nombre) {
+			Usuario valor = null;
+			for(Usuario usuario : listaUsuarios) {
+				if(usuario.getUsername().contentEquals(nombre)) {
+					valor = usuario;
+				}
+			}
+			return valor;
+		}
+		
+		public List<Usuario> getListaUsuarios() {
+			return listaUsuarios;
+		}
+
+
 		public Usuario validarLogIn(String nombre, String contraseña) {
 			for(Usuario usuario : listaUsuarios) {
 				if(usuario.getUsername().equals(nombre) && usuario.getPassword().equals(contraseña)) {

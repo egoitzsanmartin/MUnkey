@@ -24,7 +24,7 @@ Connection con;
 public Conectar() {
 	try {
 		Class.forName("com.mysql.cj.jdbc.Driver");
-		con=DriverManager.getConnection("jdbc:mysql://localhost:3306/MUNKEY?userTimezone=true&serverTimezone=UTC","root","1234");
+		con=DriverManager.getConnection("jdbc:mysql://localhost:3306/MUNKEY?userTimezone=true&serverTimezone=UTC","root","");
 	}catch (Exception e) {
 		System.err.println("Error: "+e);
 	}

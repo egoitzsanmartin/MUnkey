@@ -15,6 +15,11 @@ public class ListaChats {
 	}
 	
 	
+	public List<Chat> getListaChats() {
+		return listaChats;
+	}
+
+
 	public boolean add (Chat chat) {
 		listaChats.add(chat);
 		return true;

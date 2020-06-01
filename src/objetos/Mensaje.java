@@ -28,7 +28,7 @@ public String getDescripcion() {
 }
 @Override
 public String toString() {
-	return "\nMensaje [fecha=" + fecha + ", autor=" + autor + ", descripcion="
+	return "\nMensaje [conversacionID=" + conversacionID+ ", fecha=" + fecha + ", autor=" + autor + ", descripcion="
 			+ descripcion + "]";
 }
 
