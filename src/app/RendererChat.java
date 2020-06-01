@@ -17,19 +17,28 @@ import objetos.Usuarios;
 public class RendererChat implements ListCellRenderer<Chat>{
 	
 	Usuarios usuarios;
+	String usuario;
 	
-	public RendererChat (Usuarios usuarios) {
+	public RendererChat (Usuarios usuarios, String usuario) {
 		this.usuarios = usuarios;
+		this.usuario = usuario;
 	}
 
 	@Override
 	public Component getListCellRendererComponent(JList<? extends Chat> list, Chat value, int index, boolean isSelected,
 			boolean cellHasFocus) {
-		ImageIcon icono;
-		JLabel nombreUsuario;
-		nombreUsuario = new JLabel(value.getUsuario2());
+		ImageIcon icono = null;
+		JLabel nombreUsuario = null;
+	
+		if(usuario.equals(value.getUsuario2())) {
+			icono = (usuarios.escogerUsuario(value.getUsuario1()).getFoto()) == null? new ImageIcon("art/perfilBase.png") : new ImageIcon(usuarios.escogerUsuario(value.getUsuario2()).getFoto());
+			nombreUsuario = new JLabel(value.getUsuario1());
+		}
+		if(usuario.equals(value.getUsuario1())) {
+			icono = (usuarios.escogerUsuario(value.getUsuario2()).getFoto()) == null? new ImageIcon("art/perfilBase.png") : new ImageIcon(usuarios.escogerUsuario(value.getUsuario2()).getFoto());
+			nombreUsuario = new JLabel(value.getUsuario2());
+		}
 		nombreUsuario.setFont(new Font("myriad pro", Font.BOLD, 35));
-		icono = (usuarios.escogerUsuario(value.getUsuario2()).getFoto()) == null? new ImageIcon("art/perfilBase.png") : new ImageIcon(usuarios.escogerUsuario(value.getUsuario2()).getFoto());
 		
 		JPanel panel = new JPanel(new BorderLayout());
 		panel.add(BorderLayout.WEST, new JLabel(icono));

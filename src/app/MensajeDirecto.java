@@ -52,7 +52,7 @@ public class MensajeDirecto extends JFrame implements ActionListener, ListSelect
 		listaChat = new JList<>();
 		listaTexto = new JList<>();
 		listaChat.addListSelectionListener(this);
-		rendererChat = new RendererChat(listaUsuarios);
+		rendererChat = new RendererChat(listaUsuarios, this.usuario);
 		rendererTexto = new RendererTexto(this.usuario);
 		listaChat.setSelectedIndex(0);
 		this.setSize (800,600);
