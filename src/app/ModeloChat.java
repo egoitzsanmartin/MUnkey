@@ -24,6 +24,12 @@ public class ModeloChat extends AbstractListModel<Chat>{
 			}
 		}
 	}
+	
+	public void addChat(Chat chat) {
+		chats.add(chat);
+		
+		System.out.println(this.chats);
+	}
 
 	public List<Chat> getChats() {
 		return chats;

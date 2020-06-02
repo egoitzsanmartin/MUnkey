@@ -27,7 +27,7 @@ public class ModeloTexto extends AbstractListModel<Mensaje>{
 	}
 	
 	public void cambiarLista(List<Mensaje> listaMensajes) {
-
+		mensajes = new ArrayList<>();
 		for(Mensaje mensaje : listaMensajes) {
 			mensajes.add(mensaje);
 		}

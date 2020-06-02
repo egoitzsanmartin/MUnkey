@@ -32,7 +32,8 @@ public class MensajeDirecto extends JFrame implements ActionListener, ListSelect
 	JTextField cajaTexto;
 	ModeloChat modeloChat;
 	ModeloTexto modeloMensaje;
-	JButton boton;
+	JButton botonEnviar;
+	JButton botonConversación;
 	Controlador controlador;
 	RendererChat rendererChat;
 	RendererTexto rendererTexto;
@@ -64,7 +65,7 @@ public class MensajeDirecto extends JFrame implements ActionListener, ListSelect
 	}
 
 	private Container crearPanelVentana() {
-		JSplitPane panel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, false, crearPanelConversaciones(), crearPanelChat());
+		JSplitPane panel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, false, crearPanelIzquierda(), crearPanelChat());
 		panel.setEnabled(false);
 		panel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
 		panel.setBackground(new java.awt.Color(255, 251, 242, 255));
@@ -85,17 +86,41 @@ public class MensajeDirecto extends JFrame implements ActionListener, ListSelect
 		JPanel panel = new JPanel(new FlowLayout());
 		panel.setOpaque(false);
 		cajaTexto = new JTextField(20);
-		boton = new JButton(new ImageIcon("art/botones/enviar.png"));
-		boton.addActionListener(this);
-		boton.setContentAreaFilled(false);
-		boton.setBorderPainted(false);
+		botonEnviar = new JButton(new ImageIcon("art/botones/enviar.png"));
+		botonEnviar.addActionListener(this);
+		botonEnviar.setActionCommand("Enviar");
+		botonEnviar.setContentAreaFilled(false);
+		botonEnviar.setBorderPainted(false);
 		panel.add(cajaTexto, BorderLayout.WEST);
-		panel.add(boton, BorderLayout.EAST);
+		panel.add(botonEnviar, BorderLayout.EAST);
+		return panel;
+	}
+	
+	private Component crearPanelBoton() {
+		JPanel panel = new JPanel(new FlowLayout());
+		panel.setOpaque(false);
+		panel.setBackground(new java.awt.Color(255, 251, 242, 255));
+		botonConversación = new JButton(new ImageIcon("art/botones/enviar.png"));
+		botonConversación.addActionListener(this);
+		botonConversación.setActionCommand("Conversacion");
+		botonConversación.setContentAreaFilled(false);
+		botonConversación.setBorderPainted(false);
+		panel.add(botonConversación, BorderLayout.CENTER);
+		return panel;
+	}
+	public Component crearPanelIzquierda() {
+		JPanel panel = new JPanel(new BorderLayout());
+		panel.setBackground(new java.awt.Color(255, 251, 242, 255));
+		
+		panel.add(crearPanelConversaciones(), BorderLayout.CENTER);
+		panel.add(crearPanelBoton(), BorderLayout.SOUTH);
+		
 		return panel;
 	}
 	
 	private Component crearPanelConversaciones() {
 		panelChat = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		panelChat.setBackground(new java.awt.Color(255, 251, 242, 255));
 		listaChat.setModel(modeloChat);
 		listaChat.setCellRenderer(rendererChat);
 		panelChat.setViewportView(listaChat);
@@ -113,23 +138,41 @@ public class MensajeDirecto extends JFrame implements ActionListener, ListSelect
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-		
-		modeloChat.getChats().get(0).getListaMensajes().add(new Mensaje(timestamp, usuario, modeloChat.getChats().get(0).getConversacionID(), cajaTexto.getText()));
-		cajaTexto.setText("");
-		
-		modeloChat = new ModeloChat(this, this.controlador, this.usuario);
-		modeloMensaje = new ModeloTexto(this, this.controlador, modeloChat);
-		this.setContentPane(crearPanelVentana());
-		
-		this.setVisible(true);
+		if(e.getActionCommand().equals("Enviar")) {
+			Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+			
+			modeloChat.getChats().get(listaChat.getSelectedIndex()).getListaMensajes().add(new Mensaje(timestamp, usuario, modeloChat.getChats().get(0).getConversacionID(), cajaTexto.getText()));
+			cajaTexto.setText("");
+			
+			modeloChat = new ModeloChat(this, this.controlador, this.usuario);
+			modeloMensaje = new ModeloTexto(this, this.controlador, modeloChat);
+			this.setContentPane(crearPanelVentana());
+			
+			this.setVisible(true);
+		}
+		if(e.getActionCommand().equals("Conversacion")) {
+			new DialogoEnviarMensaje(this, controlador, usuario, listaUsuarios);
+			
+			modeloChat = new ModeloChat(this, this.controlador, this.usuario);
+			modeloMensaje = new ModeloTexto(this, this.controlador, modeloChat);
+			this.setContentPane(crearPanelVentana());
+			this.setVisible(true);
+		}
+	
 		
 	}
 
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
-		if(!e.getValueIsAdjusting()) {
+		if(e.getValueIsAdjusting()) {
+			
+			modeloChat = new ModeloChat(this, this.controlador, this.usuario);
+			modeloMensaje = new ModeloTexto(this, this.controlador, modeloChat);
 			modeloMensaje.cambiarLista(modeloChat.getElementAt(listaChat.getSelectedIndex()).getListaMensajes());
+			listaTexto.setModel(modeloMensaje);
+			this.revalidate();
+			this.setContentPane(crearPanelVentana());
+			this.setVisible(true);
 		}
 		
 	}
