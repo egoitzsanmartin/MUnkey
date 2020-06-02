@@ -24,7 +24,7 @@ Connection con;
 public Conectar() {
 	try {
 		Class.forName("com.mysql.cj.jdbc.Driver");
-		con=DriverManager.getConnection("jdbc:mysql://localhost:3306/MUNKEY?userTimezone=true&serverTimezone=UTC","root","");
+		con=DriverManager.getConnection("jdbc:mysql://localhost:3306/MUNKEY?userTimezone=true&serverTimezone=UTC","root","1234");
 	}catch (Exception e) {
 		System.err.println("Error: "+e);
 	}
@@ -58,8 +58,7 @@ public List<Usuario> cargarDatosUsuarios() {
 public void guardarDatosUsuarios(Usuario usuario) {
 	Conectar cn=new Conectar();
 	Statement st;
-	ResultSet rs;
-	String accion="INSERT into usuario VALUES" + "('"+usuario.getUsername()+"','"+usuario.getNombre()+"','"+
+	String accion="INSERT into usuario VALUES " + "('"+usuario.getUsername()+"','"+usuario.getNombre()+"','"+
 			usuario.getCorreo()+"','"+usuario.getTipo()+"','art/mono.png','"+usuario.getPassword()+"')";
 	try {
 		st=cn.con.createStatement();
@@ -68,8 +67,6 @@ public void guardarDatosUsuarios(Usuario usuario) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
-
-
 }
 
 public List<Obra> cargarDatosObras() {
@@ -97,6 +94,24 @@ public List<Obra> cargarDatosObras() {
 	}
 	
 	return listaObras;
+}
+
+public void guardarDatosObras(Obra obra) {
+	Conectar cn=new Conectar();
+	Statement st;
+	String id=Integer.toString(obra.getObraID());
+	String date=obra.getFecha().toString();
+	String accion="INSERT into obra VALUES " + "("+id+",'"+obra.getTitulo()+"','"+date+"','"+obra.getPortada()
+	+"','"+obra.getPDF()+"','"+obra.getGenero()+"','"+obra.getIdioma()+"','"+obra.getAutor()+"')";
+	try {
+		st=cn.con.createStatement();
+		st.executeUpdate(accion);
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+
+
 }
 
 public List<Like> cargarDatosLikes() {

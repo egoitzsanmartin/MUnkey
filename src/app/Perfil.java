@@ -12,20 +12,56 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+
+import objetos.Usuario;
 
 
 
 public class Perfil extends JPanel {
 	Controlador controlador;
-	
-	public Perfil(Controlador controlador) {
+	JLabel nombre,icono;
+
+	public Perfil(Controlador controlador, Usuario user) {
 		super(new BorderLayout());
 		this.controlador = controlador;
 		this.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+		this.add(crearBotonesArriba(user),BorderLayout.NORTH);
 		this.add(crearBotonesCentro(), BorderLayout.CENTER);
 		this.add(panelAbajo(), BorderLayout.SOUTH);
 	}
 	
+	private Component crearBotonesArriba(Usuario user) {
+		JPanel panel=new JPanel(new GridLayout(2,5,0,0));
+		panel.setBorder(BorderFactory.createEmptyBorder(170, 350, 0, 0));
+		panel.setOpaque(false);
+		nombre=new JLabel(user.getUsername());
+		nombre.setFont(new Font ("myriad pro", Font.BOLD, 55));
+		nombre.setForeground(Color.ORANGE);
+		nombre.setHorizontalAlignment(SwingConstants.CENTER);
+		nombre.setVerticalAlignment(SwingConstants.CENTER);
+		
+		String image=(user.getFoto());
+		
+		if(image==null) {
+		icono=new JLabel (new ImageIcon("art/perfilBase.png"));	
+		}
+		else {
+			icono=new JLabel (new ImageIcon(image));
+		}
+		panel.add(panelVacio());
+		panel.add(panelVacio());
+		panel.add(panelVacio());
+		panel.add(panelVacio());
+		panel.add(nombre);
+		panel.add(panelVacio());
+		panel.add(panelVacio());
+		panel.add(panelVacio());
+		panel.add(panelVacio());
+		panel.add(icono);
+		return panel;
+	}
+
 	public Component panelVacio() {
 		JPanel panel = new JPanel(new BorderLayout());
 		panel.setOpaque(false);
@@ -88,7 +124,7 @@ public class Perfil extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		ImageIcon icon = new ImageIcon("art/fondo.png");
+		ImageIcon icon = new ImageIcon("art/fondoPerfil.png");
 		g.drawImage(icon.getImage(), 0, 0, this.getWidth(), this.getHeight(), this);
 	}
 
