@@ -24,7 +24,7 @@ Connection con;
 public Conectar() {
 	try {
 		Class.forName("com.mysql.cj.jdbc.Driver");
-		con=DriverManager.getConnection("jdbc:mysql://localhost:3306/MUNKEY?userTimezone=true&serverTimezone=UTC","root","1234");
+		con=DriverManager.getConnection("jdbc:mysql://localhost:3306/MUNKEY?userTimezone=true&serverTimezone=UTC","root","");
 	}catch (Exception e) {
 		System.err.println("Error: "+e);
 	}
@@ -103,6 +103,23 @@ public void guardarDatosObras(Obra obra) {
 	String date=obra.getFecha().toString();
 	String accion="INSERT into obra VALUES " + "("+id+",'"+obra.getTitulo()+"','"+date+"','"+obra.getPortada()
 	+"','"+obra.getPDF()+"','"+obra.getGenero()+"','"+obra.getIdioma()+"','"+obra.getAutor()+"')";
+	try {
+		st=cn.con.createStatement();
+		st.executeUpdate(accion);
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+
+
+}
+
+public void guardarDatosChats(Chat chat) {
+	Conectar cn=new Conectar();
+	Statement st;
+	String id=Integer.toString(chat.getConversacionID());
+	String accion="INSERT into chat VALUES " + "("+id+",'"+chat.getUsuario1()+"','"+chat.getUsuario2()
+	+"')";
 	try {
 		st=cn.con.createStatement();
 		st.executeUpdate(accion);

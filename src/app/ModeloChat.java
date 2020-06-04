@@ -2,7 +2,6 @@ package app;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.swing.AbstractListModel;
 
@@ -21,14 +20,14 @@ public class ModeloChat extends AbstractListModel<Chat>{
 		for(Chat chat : controlador.listaChats.getListaChats()) {
 			if(chat.getUsuario1().equals(usuario) || chat.getUsuario2().equals(usuario)) {
 				chats.add(chat);
+				chat.addPropertyChangeListener(panel);
 			}
 		}
 	}
 	
 	public void addChat(Chat chat) {
 		chats.add(chat);
-		
-		System.out.println(this.chats);
+		this.fireContentsChanged("chatAñadido", -1, chats.size());
 	}
 
 	public List<Chat> getChats() {

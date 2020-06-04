@@ -23,13 +23,13 @@ import objetos.Usuarios;
 public class DialogoEnviarMensaje extends JDialog implements ActionListener{
 	
 	JTextField txNombre;
-	Controlador controlador;
+	ModeloChat modeloChat;
 	String usuario;
 	Usuarios usuarios;
 	
-	public DialogoEnviarMensaje (JFrame ventana, Controlador controlador, String usuario, Usuarios usuarios) {
+	public DialogoEnviarMensaje (JFrame ventana, ModeloChat modeloChat, String usuario, Usuarios usuarios) {
 		super (ventana, "Datos Envio", true);
-		this.controlador = controlador;
+		this.modeloChat = modeloChat;
 		this.usuario = usuario;
 		this.usuarios = usuarios;
 		this.setLocation(250,100);
@@ -73,6 +73,7 @@ public class DialogoEnviarMensaje extends JDialog implements ActionListener{
 		bCancel.addActionListener(this);
 		panel.add(bCancel);
 		return panel;
+		
 	}
 
 	@Override
@@ -80,9 +81,12 @@ public class DialogoEnviarMensaje extends JDialog implements ActionListener{
 		if (evt.getActionCommand().equals("ok")) {
 			for(Usuario usuario : usuarios.getListaUsuarios()) {
 				if(usuario.getNombre().equals(txNombre.getText())) {
-					controlador.listaChats.getListaChats().add(new Chat(controlador.listaChats.getListaChats().size()+1, this.usuario, txNombre.getText()));
+					Chat chat = new Chat(modeloChat.getSize()+1, this.usuario, txNombre.getText());
+					modeloChat.addChat(chat);
 				}
+				
 			}
+			
 			
 		}
 		this.dispose();

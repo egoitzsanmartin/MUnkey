@@ -1,8 +1,10 @@
 package app;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.Panel;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -29,7 +31,9 @@ public class RendererChat implements ListCellRenderer<Chat>{
 			boolean cellHasFocus) {
 		ImageIcon icono = null;
 		JLabel nombreUsuario = null;
+		JPanel panel = new JPanel(new BorderLayout());
 	
+		panel.setBackground(Color.WHITE);
 		if(usuario.equals(value.getUsuario2())) {
 			icono = (usuarios.escogerUsuario(value.getUsuario1()).getFoto()) == null? new ImageIcon("art/perfilBase.png") : new ImageIcon(usuarios.escogerUsuario(value.getUsuario2()).getFoto());
 			nombreUsuario = new JLabel(value.getUsuario1());
@@ -40,7 +44,10 @@ public class RendererChat implements ListCellRenderer<Chat>{
 		}
 		nombreUsuario.setFont(new Font("myriad pro", Font.BOLD, 35));
 		
-		JPanel panel = new JPanel(new BorderLayout());
+		if(isSelected) {
+			panel.setBackground(Color.GRAY);
+		}
+		
 		panel.add(BorderLayout.WEST, new JLabel(icono));
 		panel.add(BorderLayout.EAST, nombreUsuario);
 		

@@ -6,7 +6,10 @@ import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -26,7 +29,7 @@ import objetos.Usuario;
 import objetos.Usuarios;
 
 
-public class MensajeDirecto extends JFrame implements ActionListener, ListSelectionListener{
+public class MensajeDirecto extends JFrame implements ActionListener, ListSelectionListener, PropertyChangeListener {
 	String usuario;
 	Usuarios listaUsuarios;
 	JTextField cajaTexto;
@@ -140,23 +143,17 @@ public class MensajeDirecto extends JFrame implements ActionListener, ListSelect
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand().equals("Enviar")) {
 			Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+			Mensaje mensaje = new Mensaje(timestamp, usuario, modeloChat.getChats().get(listaChat.getSelectedIndex()).getConversacionID(), cajaTexto.getText());
 			
-			modeloChat.getChats().get(listaChat.getSelectedIndex()).getListaMensajes().add(new Mensaje(timestamp, usuario, modeloChat.getChats().get(0).getConversacionID(), cajaTexto.getText()));
+			modeloMensaje.add(mensaje);
+			modeloChat.getChats().get(listaChat.getSelectedIndex()).add(mensaje);
 			cajaTexto.setText("");
-			
-			modeloChat = new ModeloChat(this, this.controlador, this.usuario);
-			modeloMensaje = new ModeloTexto(this, this.controlador, modeloChat);
-			this.setContentPane(crearPanelVentana());
-			
-			this.setVisible(true);
+			this.repaint();
 		}
+		
 		if(e.getActionCommand().equals("Conversacion")) {
-			new DialogoEnviarMensaje(this, controlador, usuario, listaUsuarios);
-			
-			modeloChat = new ModeloChat(this, this.controlador, this.usuario);
-			modeloMensaje = new ModeloTexto(this, this.controlador, modeloChat);
-			this.setContentPane(crearPanelVentana());
-			this.setVisible(true);
+			new DialogoEnviarMensaje(this, modeloChat, usuario, listaUsuarios);
+			this.repaint();
 		}
 	
 		
@@ -164,16 +161,25 @@ public class MensajeDirecto extends JFrame implements ActionListener, ListSelect
 
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
-		if(e.getValueIsAdjusting()) {
-			
-			modeloChat = new ModeloChat(this, this.controlador, this.usuario);
-			modeloMensaje = new ModeloTexto(this, this.controlador, modeloChat);
+		if(listaChat.getSelectedValue() != null) {		
 			modeloMensaje.cambiarLista(modeloChat.getElementAt(listaChat.getSelectedIndex()).getListaMensajes());
-			listaTexto.setModel(modeloMensaje);
-			this.revalidate();
-			this.setContentPane(crearPanelVentana());
-			this.setVisible(true);
+			this.repaint();
 		}
+		
+	}
+
+	@Override
+	public void dispose() {
+		controlador.listaChats.getListaChats().clear();
+		controlador.listaChats.getListaChats().addAll(modeloChat.getChats());
+		super.dispose();
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent arg0) {
+		panelChat.revalidate();
+		panelVisor.revalidate();
+		this.repaint();
 		
 	}
 }

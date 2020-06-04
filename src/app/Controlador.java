@@ -53,9 +53,11 @@ public class Controlador implements ActionListener, PropertyChangeListener {
 		listaComentarios=new Comentarios();
 		listaChats=new ListaChats();
 		conectar=new Conectar();
-		this.serial = new Serial();
+		//this.serial = new Serial();
 		principal.revalidate();
 	}
+	
+	
 
 	@Override
 	public void propertyChange(PropertyChangeEvent arg0) {

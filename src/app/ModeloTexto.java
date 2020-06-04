@@ -1,5 +1,6 @@
 package app;
 
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,14 +14,18 @@ public class ModeloTexto extends AbstractListModel<Mensaje>{
 	List<Mensaje> mensajes;
 	MensajeDirecto panel;
 	ModeloChat modeloChat;
+	
 
 	public ModeloTexto(MensajeDirecto panel, Controlador controlador, ModeloChat modeloChat) {
 		mensajes = new ArrayList<>();
 		this.modeloChat = modeloChat;
 		this.panel = panel;
 		if(modeloChat.getChats().size() > 0) {
-			for(Mensaje mensaje : modeloChat.getChats().get(0).getListaMensajes()) {
-				mensajes.add(mensaje);
+			if(modeloChat.getChats().get(0).getListaMensajes() != null) {
+				for(Mensaje mensaje : modeloChat.getChats().get(0).getListaMensajes()) {
+					mensajes.add(mensaje);
+					mensaje.addPropertyChangeListener(panel);
+				}
 			}
 		}
 		
@@ -28,14 +33,13 @@ public class ModeloTexto extends AbstractListModel<Mensaje>{
 	
 	public void cambiarLista(List<Mensaje> listaMensajes) {
 		mensajes = new ArrayList<>();
-		for(Mensaje mensaje : listaMensajes) {
-			mensajes.add(mensaje);
-		}
+		mensajes.addAll(listaMensajes);
+		this.fireContentsChanged("cambioLista", -1, mensajes.size());
 	}
 	
-	public void añadirMensaje(Mensaje mensaje) {
+	public void add(Mensaje mensaje) {
 		mensajes.add(mensaje);
-		System.out.println(mensajes);
+		this.fireContentsChanged("mensajeAñadido", -1, mensajes.size());
 	}
 	
 	@Override
