@@ -102,6 +102,16 @@ public class Controlador implements ActionListener, PropertyChangeListener {
 			principal.setContentPane(new Base(this));
 			principal.revalidate();
 		}
+		if(e.getActionCommand().contentEquals("top")) {
+			Obra obra=new Obra(sendL, null, null, null, null, null, null, null);
+			principal.setContentPane(new VisorLibro(this, user,obra));
+			principal.revalidate();
+		}
+		if(e.getActionCommand().contentEquals("masObra")) {
+			Obra obra=new Obra(sendL, null, null, null, null, null, null, null);
+			principal.setContentPane(new SeccionObra(this, user, null, listaComentarios));
+			principal.revalidate();
+		}
 		if(e.getActionCommand().contentEquals("perfil")) {
 			principal.setContentPane(new Perfil(this, user));
 			principal.revalidate();

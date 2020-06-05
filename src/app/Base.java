@@ -44,7 +44,15 @@ public class Base extends JPanel {
 		boton.setContentAreaFilled(false);
 		boton.setBorderPainted(false);
 		
+		JButton lupa = new JButton(new ImageIcon("art/botones/lupa.png"));
+		lupa.addActionListener(controlador);
+		lupa.setActionCommand("lupa");
+		lupa.setToolTipText("Busca la obra que quieras leer");
+		lupa.setContentAreaFilled(false);
+		lupa.setBorderPainted(false);
+		
 		panel.add(boton, BorderLayout.EAST);
+		panel.add(lupa, BorderLayout.CENTER);
 		
 		return panel;
 	}

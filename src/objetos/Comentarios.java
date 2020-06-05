@@ -15,6 +15,11 @@ public class Comentarios {
 	}
 	
 	
+	public List<Comentario> getListaComentarios() {
+		return listaComentarios;
+	}
+
+
 	public boolean add (Comentario comentario) {
 		listaComentarios.add(comentario);
 		return true;
