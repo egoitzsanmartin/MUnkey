@@ -33,7 +33,22 @@ public class Menu extends JPanel {
 		//listaUsuarios=new Usuarios();
 		
 		this.add(crearPanelDatos(), BorderLayout.WEST);
-		//this.add(crearPanelBoton(), BorderLayout.SOUTH);
+		this.add(crearPanelVerificar(), BorderLayout.EAST);
+	}
+
+	private Component crearPanelVerificar() {
+		JPanel panel = new JPanel(new BorderLayout());
+		panel.setBorder(BorderFactory.createEmptyBorder(90, 40, 30, 150));
+		panel.setOpaque(false);
+		JButton boton = new JButton(new ImageIcon("art/botones/verificar.png"));
+		boton.setToolTipText("¿Eres una editorial? Si quieres verificar tu cuenta envia sigue estos pasos:"
+				+ "\n-Envia un correo a MUnkey.verify@gmail.com\n-En el correo añade tu cuenta de MUnkey y pruebas que verifiquen tu identidad");
+		boton.setContentAreaFilled(false);
+		boton.setBorderPainted(false);
+		
+		panel.add(boton, BorderLayout.SOUTH);
+		
+		return panel;
 	}
 
 	private Component crearPanelDatos() {

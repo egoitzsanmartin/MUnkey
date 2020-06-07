@@ -28,8 +28,7 @@ public class Comentario {
 	}
 	@Override
 	public String toString() {
-		return "Comentario [fSubida=" + fSubida + ", autor=" + autor + ", obraID=" + obraID + "\n"+"comentario="
-				+ comentario + "]";
+		return autor+ "\n"+comentario + "\n"+fSubida;
 	}
 	
 	

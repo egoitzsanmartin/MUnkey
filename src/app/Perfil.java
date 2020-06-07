@@ -90,7 +90,7 @@ public class Perfil extends JPanel {
 		JPanel panel = new JPanel(new GridLayout(1, 5, 20, 40));
 		panel.setBorder(BorderFactory.createEmptyBorder(10, 0, 30, 20));
 		panel.setOpaque(false);
-		JButton fav = new JButton(new ImageIcon("art/botones/fav.png"));
+		JButton fav = new JButton(new ImageIcon("art/botones/favMenu.png"));
 		fav.addActionListener(controlador);
 		fav.setActionCommand("favoritas");
 		fav.setToolTipText("Una lista de las obras que más te han gustado");

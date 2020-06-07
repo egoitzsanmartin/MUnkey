@@ -9,7 +9,6 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -27,6 +26,7 @@ import objetos.Chat;
 import objetos.Mensaje;
 import objetos.Usuario;
 import objetos.Usuarios;
+import sql.Conectar;
 
 
 public class MensajeDirecto extends JFrame implements ActionListener, ListSelectionListener, PropertyChangeListener {
@@ -44,11 +44,12 @@ public class MensajeDirecto extends JFrame implements ActionListener, ListSelect
 	JList<Mensaje> listaTexto;
 	JScrollPane panelVisor;
 	JScrollPane panelChat;
-	
+	Conectar conectar;
 	
 	public MensajeDirecto(Controlador controlador, Usuarios listaUsuarios, Usuario usuario){
 		super("Mensaje Directo");
 		this.controlador = controlador;
+		conectar=new Conectar();
 		this.usuario = usuario.getNombre();
 		this.listaUsuarios = listaUsuarios;
 		modeloChat = new ModeloChat(this, this.controlador, this.usuario);
@@ -146,13 +147,14 @@ public class MensajeDirecto extends JFrame implements ActionListener, ListSelect
 			Mensaje mensaje = new Mensaje(timestamp, usuario, modeloChat.getChats().get(listaChat.getSelectedIndex()).getConversacionID(), cajaTexto.getText());
 			
 			modeloMensaje.add(mensaje);
+			conectar.guardarDatosMensaje(mensaje);
 			modeloChat.getChats().get(listaChat.getSelectedIndex()).add(mensaje);
 			cajaTexto.setText("");
 			this.repaint();
 		}
 		
 		if(e.getActionCommand().equals("Conversacion")) {
-			new DialogoEnviarMensaje(this, modeloChat, usuario, listaUsuarios);
+			new DialogoEnviarMensaje(this, modeloChat, usuario, listaUsuarios, controlador.listaChats);
 			this.repaint();
 		}
 	

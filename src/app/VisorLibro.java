@@ -25,12 +25,16 @@ import objetos.Usuario;
 public class VisorLibro extends JPanel {
 	Controlador controlador;
 	JLabel nombre,icono;
+	Obra obra;
+	Usuario user;
 
 	public VisorLibro(Controlador controlador, Usuario user, Obra obra) {
 		super(new BorderLayout());
 		this.controlador = controlador;
+		this.user = user;
+		this.obra = obra;
 		this.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
-		this.add(crearPanelCentro(obra), BorderLayout.CENTER);
+		this.add(crearPanelCentro(), BorderLayout.CENTER);
 		this.add(panelAbajo(),BorderLayout.WEST);
 	}
 	
@@ -45,7 +49,7 @@ public class VisorLibro extends JPanel {
 	
 	public Component panelAbajo() {
 		JPanel panel = new JPanel(new BorderLayout());
-		panel.setBorder(BorderFactory.createEmptyBorder(10, 20, 30, 20));
+		panel.setBorder(BorderFactory.createEmptyBorder(200, 20, 30, 20));
 		panel.setOpaque(false);
 		JButton home = new JButton(new ImageIcon("art/botones/home.png"));
 		home.addActionListener(controlador);
@@ -61,14 +65,20 @@ public class VisorLibro extends JPanel {
 		masObra.setContentAreaFilled(false);
 		masObra.setBorderPainted(false);
 		
+		JButton reportar = new JButton(new ImageIcon("art/botones/reportar.png"));
+		reportar.setToolTipText("¿Esta obra incumple las leyes de derechos de autor? Envia un correo a munkey.copyright@gmail.com con la información pertinente, nosotros nos encargamos del resto.");
+		reportar.setContentAreaFilled(false);
+		reportar.setBorderPainted(false);
+		
+		panel.add(reportar, BorderLayout.NORTH);
 		panel.add(masObra, BorderLayout.CENTER);
 		panel.add(home, BorderLayout.SOUTH);
 		
 		return panel;
 	}
 	
-	private Component crearPanelCentro(Obra obra) {
-		String filePath="C:/Users/Unai/Desktop/La ética y la moral; paradojas del ser humano.pdf";
+	private Component crearPanelCentro() {
+		String filePath="C:/Users/Unai/Desktop/pbl/Munkey 41/obras/"+obra.getPDF();
 		SwingController controller = new SwingController();
 	    SwingViewBuilder factory = new SwingViewBuilder(controller);
 	    JPanel viewerComponentPanel = factory.buildViewerPanel();

@@ -1,5 +1,8 @@
 package objetos;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Usuario {
 String username;
 String password;
@@ -7,6 +10,8 @@ String nombre;
 String correo;
 String foto;
 String tipo;
+List<Like> listaLikes;
+List<Comentario> listaComentarios;
 public Usuario(String username, String password, String nombre, String correo, String tipo) {
 	super();
 	this.username = username;
@@ -14,6 +19,46 @@ public Usuario(String username, String password, String nombre, String correo, S
 	this.nombre = nombre;
 	this.correo = correo;
 	this.tipo = tipo;
+	listaLikes=new ArrayList<>();
+	listaComentarios=new ArrayList<>();
+}
+
+public boolean deleteLike (Like like) {
+	for(int i=0;i<listaLikes.size();i++)
+	if(like.getObraID()==listaLikes.get(i).getObraID()) {
+	listaLikes.remove(i);
+	}
+	return true;
+}
+
+public void CargarComentarios(Comentarios listaTodos) {
+	for(Comentario comentario:listaTodos.getListaComentarios()) {
+		if(comentario.getAutor().equals(username)) {
+			addComentario(comentario);
+		}
+	}
+}
+public List<Comentario> getListaComentarios() {
+	return listaComentarios;
+}
+public boolean addComentario(Comentario comentario) {
+	listaComentarios.add(comentario);
+	return true;
+}
+
+public void CargarLikes(Likes listaTodos) {
+	for(Like like:listaTodos.getListaLikes()) {
+		if(like.getAutor().equals(username)) {
+			addLike(like);
+		}
+	}
+}
+public List<Like> getListaLikes() {
+	return listaLikes;
+}
+public boolean addLike (Like like) {
+	listaLikes.add(like);
+	return true;
 }
 public String getPassword() {
 	return password;

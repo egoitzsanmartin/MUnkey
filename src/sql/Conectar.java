@@ -24,7 +24,7 @@ Connection con;
 public Conectar() {
 	try {
 		Class.forName("com.mysql.cj.jdbc.Driver");
-		con=DriverManager.getConnection("jdbc:mysql://localhost:3306/MUNKEY?userTimezone=true&serverTimezone=UTC","root","");
+		con=DriverManager.getConnection("jdbc:mysql://localhost:3306/MUNKEY?userTimezone=true&serverTimezone=UTC","root","1234");
 	}catch (Exception e) {
 		System.err.println("Error: "+e);
 	}
@@ -118,7 +118,7 @@ public void guardarDatosChats(Chat chat) {
 	Conectar cn=new Conectar();
 	Statement st;
 	String id=Integer.toString(chat.getConversacionID());
-	String accion="INSERT into chat VALUES " + "("+id+",'"+chat.getUsuario1()+"','"+chat.getUsuario2()
+	String accion="INSERT into conversacion VALUES " + "("+id+",'"+chat.getUsuario1()+"','"+chat.getUsuario2()
 	+"')";
 	try {
 		st=cn.con.createStatement();
@@ -129,6 +129,70 @@ public void guardarDatosChats(Chat chat) {
 	}
 
 
+}
+
+public void guardarDatosMensaje(Mensaje mensaje) {
+	Conectar cn=new Conectar();
+	Statement st;
+	String fecha=mensaje.getFecha().toString();
+	String id=Integer.toString(mensaje.getConversacionID());
+	String accion="INSERT into mensaje VALUES " + "('"+fecha+"','"+mensaje.getAutor()+"',"+id+",'"+mensaje.getDescripcion()+"')";
+	try {
+		st=cn.con.createStatement();
+		st.executeUpdate(accion);
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+
+
+}
+public void guardarDatosLike(Like like) {
+	Conectar cn=new Conectar();
+	Statement st;
+	String fecha=like.getfSubida().toString();
+	String id=Integer.toString(like.getObraID());
+	String accion="INSERT into meGusta VALUES " + "('"+fecha+"','"+like.getAutor()+"',"+id+")";
+	try {
+		st=cn.con.createStatement();
+		st.executeUpdate(accion);
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+
+
+}
+
+public void guardarDatosComentario(Comentario comentario) {
+	Conectar cn=new Conectar();
+	Statement st;
+	String fecha=comentario.getfSubida().toString();
+	String id=Integer.toString(comentario.getObraID());
+	String accion="INSERT into comentario VALUES " + "('"+fecha+"','"+comentario.getComentario()+"','"+comentario.getAutor()+"',"+id+")";
+	try {
+		st=cn.con.createStatement();
+		st.executeUpdate(accion);
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+
+
+}
+
+public void borrarLike(String usuario, int obraID) {
+	Conectar cn=new Conectar();
+	Statement st;
+	String id=Integer.toString(obraID);
+	String accion="DELETE FROM meGusta WHERE autor='"+usuario+"' and obraID="+id; 
+	try {
+		st=cn.con.createStatement();
+		st.executeUpdate(accion);
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 }
 
 public List<Like> cargarDatosLikes() {

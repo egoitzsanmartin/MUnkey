@@ -221,10 +221,17 @@ public class SubirLibro extends JDialog{
 		return nombree.getText();
 	}
 	public String leerPortada(){
-		return portada2.getText();
+		String fullPath =portada2.getText();
+		int index = fullPath.lastIndexOf("\\");
+		String fileName = fullPath.substring(index + 1);
+		return fileName;
+
 	}
 	public String leerPDF(){
-		return pdf2.getText();
+		String fullPath =pdf2.getText();
+		int index = fullPath.lastIndexOf("\\");
+		String fileName = fullPath.substring(index + 1);
+		return fileName;
 	}
 	public String leerGenero(){
 		return generoo.getSelectedItem().toString();

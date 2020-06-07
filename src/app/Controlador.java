@@ -10,11 +10,14 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.Calendar;
+import java.util.Random;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import objetos.Comentario;
 import objetos.Comentarios;
+import objetos.Like;
 import objetos.Likes;
 import objetos.ListaChats;
 import objetos.Obra;
@@ -36,8 +39,11 @@ public class Controlador implements ActionListener, PropertyChangeListener {
 	Menu login;
 	Usuario user;
 	SubirLibro subir;
+	BuscarLibro buscar;
+	SeccionObra seccionObra;
 	Conectar conectar;
 	Serial serial;
+	Obra enUso;
 	final int sendL = 'l';
 	
 	PropertyChangeSupport soporte;
@@ -52,11 +58,18 @@ public class Controlador implements ActionListener, PropertyChangeListener {
 		listaLikes=new Likes();
 		listaComentarios=new Comentarios();
 		listaChats=new ListaChats();
+		cargarLikesComentariosObras();
 		conectar=new Conectar();
-		//this.serial = new Serial();
+		this.serial = new Serial();
 		principal.revalidate();
 	}
 	
+	public void cargarLikesComentariosObras() {
+		for(Obra obra:listaObras.getListaObras()) {
+			obra.CargarComentarios(listaComentarios);
+			obra.CargarLikes(listaLikes);
+		}
+	}
 	
 
 	@Override
@@ -74,10 +87,64 @@ public class Controlador implements ActionListener, PropertyChangeListener {
 			principal.setContentPane(new Base(this));
 			principal.revalidate();
 			serial.writer.sendData(sendL);
+			user.CargarComentarios(listaComentarios);
+			user.CargarLikes(listaLikes);
 			}
 		}
 		if(e.getActionCommand().contentEquals("nuevaCuenta")) {
 			registro=new Registro(this);
+			principal.revalidate();
+		}
+		if(e.getActionCommand().contentEquals("nuevoComentario")) {
+			java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+			listaComentarios.add(new Comentario(date, user.getUsername(), enUso.getObraID(), seccionObra.leerMensaje()));
+			user.addComentario(new Comentario(date, user.getUsername(), enUso.getObraID(), seccionObra.leerMensaje()));
+			enUso.addComentario(new Comentario(date, user.getUsername(), enUso.getObraID(), seccionObra.leerMensaje()));
+			System.out.println(date+" "+user.getUsername()+" "+enUso.getObraID()+" "+seccionObra.leerMensaje());
+			seccionObra=new SeccionObra(this, user, enUso);
+			principal.setContentPane(seccionObra);
+			principal.revalidate();
+		}
+		if(e.getActionCommand().contentEquals("nuevoLike")) {
+			int cont=0;
+			java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+			Like meGusta=new Like(date, user.getUsername(), enUso.getObraID());
+			for(Like like:user.getListaLikes()) {
+				if(like.getObraID()==meGusta.getObraID()){
+					cont++;
+				}
+			}
+			if(cont==0) {
+			listaLikes.add(meGusta);
+			user.addLike(meGusta);
+			enUso.addLike(meGusta);
+			conectar.guardarDatosLike(meGusta);
+			}
+			else {
+				listaLikes.deleteLike(meGusta);
+				user.deleteLike(meGusta);
+				enUso.deleteLike(meGusta);
+				conectar.borrarLike(user.getUsername(), meGusta.getObraID());
+			}
+			seccionObra=new SeccionObra(this, user, enUso);
+			principal.setContentPane(seccionObra);
+			principal.revalidate();
+		}
+		if(e.getActionCommand().contentEquals("favoritas")) {
+			
+			principal.setContentPane(new VisorLibrosFiltrados(this, listaObras,user.getNombre(), "Likes"));
+			principal.revalidate();
+		}
+		if(e.getActionCommand().contentEquals("random")) {
+			Random r = new Random();
+			int numero= r.nextInt((listaObras.getListaObras().size()-1) + 1);
+			Obra obra=listaObras.getListaObras().get(numero);
+			enUso=obra;
+			principal.setContentPane(new VisorLibro(this, user,enUso));
+			principal.revalidate();
+		}
+		if(e.getActionCommand().contentEquals("general")) {
+			principal.setContentPane(new VisorLibrosFiltrados(this, listaObras,"", "Autor"));
 			principal.revalidate();
 		}
 		if(e.getActionCommand().contentEquals("crearUsuario")) {
@@ -91,6 +158,7 @@ public class Controlador implements ActionListener, PropertyChangeListener {
 					conectar.guardarDatosUsuarios(usuario);
 					
 					JOptionPane.showMessageDialog(new JFrame(), " Usuario creado corréctamente", "PROCESO TERMINADO", JOptionPane.INFORMATION_MESSAGE);				
+					registro.dispose();
 				}else {
 					JOptionPane.showMessageDialog(new JFrame(), " Contraseñas diferentes", "ERROR", JOptionPane.ERROR_MESSAGE);
 					
@@ -103,13 +171,23 @@ public class Controlador implements ActionListener, PropertyChangeListener {
 			principal.revalidate();
 		}
 		if(e.getActionCommand().contentEquals("top")) {
-			Obra obra=new Obra(sendL, null, null, null, null, null, null, null);
-			principal.setContentPane(new VisorLibro(this, user,obra));
+			enUso=listaObras.getListaObras().get(0);
+			int size=0;
+			for(Obra obra:listaObras.getListaObras()) {
+				if (obra.getListaLikes().size()>=size && obra.getListaLikes().size() >= enUso.getListaLikes().size()) {
+					enUso=obra;
+				}
+			}
+			principal.setContentPane(new VisorLibro(this, user, enUso));
 			principal.revalidate();
 		}
 		if(e.getActionCommand().contentEquals("masObra")) {
-			Obra obra=new Obra(sendL, null, null, null, null, null, null, null);
-			principal.setContentPane(new SeccionObra(this, user, null, listaComentarios));
+			seccionObra=new SeccionObra(this, user, enUso);
+			principal.setContentPane(seccionObra);
+			principal.revalidate();
+		}
+		if(e.getActionCommand().contentEquals("misObras")) {
+			principal.setContentPane(new VisorLibrosFiltrados(this, listaObras, user.getNombre(), "Autor"));
 			principal.revalidate();
 		}
 		if(e.getActionCommand().contentEquals("perfil")) {
@@ -124,9 +202,27 @@ public class Controlador implements ActionListener, PropertyChangeListener {
 			subir=new SubirLibro(this);
 			principal.revalidate();
 		}
+		if(e.getActionCommand().contentEquals("lupa")) {
+			buscar=new BuscarLibro(this);
+			principal.revalidate();
+		}
+		if(e.getActionCommand().contentEquals("BuscarLibro")) {
+			String clave=buscar.leerClave();
+			String filtro=buscar.leerFiltro();
+			principal.setContentPane(new VisorLibrosFiltrados(this, listaObras, clave, filtro));
+			buscar.dispose();
+			principal.revalidate();
+		}
 		if(e.getActionCommand().contentEquals("cancelar")) {
 			principal.setContentPane(new Base(this));
 			principal.revalidate();
+		}
+		for(Obra obra:listaObras.getListaObras()) {
+			if(e.getActionCommand().contentEquals(Integer.toString(obra.getObraID()))){
+				enUso=obra;
+				principal.setContentPane(new VisorLibro(this, user, enUso));
+				principal.revalidate();
+			}
 		}
 		if(e.getActionCommand().contentEquals("aceptar")) {
 		
@@ -137,6 +233,7 @@ public class Controlador implements ActionListener, PropertyChangeListener {
 							   subir.leerPDF(), subir.leerGenero(),subir.leerIdioma(),date);
 			
 			JOptionPane.showMessageDialog(new JFrame(), "Obra guardada correctamente", "PROCESO TERMINADO", JOptionPane.INFORMATION_MESSAGE);
+			subir.dispose();
 			System.out.println(obra);
 			listaObras.add(obra);
 			conectar.guardarDatosObras(obra);
