@@ -8,6 +8,7 @@ import java.beans.PropertyChangeSupport;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Timestamp;
 import java.util.Base64;
 import java.util.Calendar;
 import java.util.Random;
@@ -95,16 +96,6 @@ public class Controlador implements ActionListener, PropertyChangeListener {
 			registro=new Registro(this);
 			principal.revalidate();
 		}
-		if(e.getActionCommand().contentEquals("nuevoComentario")) {
-			java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
-			listaComentarios.add(new Comentario(date, user.getUsername(), enUso.getObraID(), seccionObra.leerMensaje()));
-			user.addComentario(new Comentario(date, user.getUsername(), enUso.getObraID(), seccionObra.leerMensaje()));
-			enUso.addComentario(new Comentario(date, user.getUsername(), enUso.getObraID(), seccionObra.leerMensaje()));
-			System.out.println(date+" "+user.getUsername()+" "+enUso.getObraID()+" "+seccionObra.leerMensaje());
-			seccionObra=new SeccionObra(this, user, enUso);
-			principal.setContentPane(seccionObra);
-			principal.revalidate();
-		}
 		if(e.getActionCommand().contentEquals("nuevoLike")) {
 			int cont=0;
 			java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
@@ -149,6 +140,7 @@ public class Controlador implements ActionListener, PropertyChangeListener {
 		}
 		if(e.getActionCommand().contentEquals("crearUsuario")) {
 			if(listaUsuarios.buscarUsuario(registro.leerUsuario())==1) {
+				if(registro.leerContraseña1().length()>=10) {
 				if(registro.leerContraseña1().equals(registro.leerContraseña2())) {
 					String pass= encriptacionHash256(registro.leerContraseña1());
 					Usuario usuario=new Usuario(registro.leerUsuario(),pass,registro.leerNombre(),
@@ -162,6 +154,9 @@ public class Controlador implements ActionListener, PropertyChangeListener {
 				}else {
 					JOptionPane.showMessageDialog(new JFrame(), " Contraseñas diferentes", "ERROR", JOptionPane.ERROR_MESSAGE);
 					
+				}
+				}else {
+					JOptionPane.showMessageDialog(new JFrame(), " Contraseñas diferentes o no son lo suficiente largas (mínimo 10 carácteres)", "ERROR", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 			principal.revalidate();

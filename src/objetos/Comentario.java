@@ -3,15 +3,16 @@ package objetos;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 public class Comentario {
-	Date fSubida;
+	Timestamp fSubida;
 	String autor;
 	int obraID;
 	String comentario;
 	PropertyChangeSupport soporte;
 	
-	public Comentario(Date fSubida, String autor, int obraID, String comentario) {
+	public Comentario(Timestamp fSubida, String autor, int obraID, String comentario) {
 		super();
 		this.fSubida = fSubida;
 		this.autor = autor;
@@ -23,7 +24,7 @@ public class Comentario {
 	public void addPropertyChangeListener (PropertyChangeListener listener) {
 		soporte.addPropertyChangeListener(listener);
 	}
-	public Date getfSubida() {
+	public Timestamp getfSubida() {
 		return fSubida;
 	}
 	public String getAutor() {

@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -59,6 +60,7 @@ public class SeccionObra extends JPanel implements PropertyChangeListener, Actio
 		rendererComentario = new RendererComentarios(this.user.getNombre());
 		this.add(crearPanelCentro(), BorderLayout.CENTER);
 		this.add(panelAbajo(),BorderLayout.WEST);
+		this.add(crearPanelInfo(),BorderLayout.NORTH);
 	}
 	
 	public Component panelVacio() {
@@ -82,6 +84,7 @@ public class SeccionObra extends JPanel implements PropertyChangeListener, Actio
 		
 		panel.add(home, BorderLayout.SOUTH);
 		
+		
 		return panel;
 	}
 	
@@ -92,12 +95,11 @@ public class SeccionObra extends JPanel implements PropertyChangeListener, Actio
 		panel.add(crearPanelLikes(),BorderLayout.EAST);
 		panel.add(crearPanelChat(), BorderLayout.CENTER);
 		panel.add(crearPanelCaja(),BorderLayout.SOUTH);
-		panel.add(crearPanelInfo(),BorderLayout.NORTH);
 		return panel;
 	}
 	private Component crearPanelInfo() {
 		JPanel panel= new JPanel (new GridLayout(1,2));
-		panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 190, 70));
+		panel.setBorder(BorderFactory.createEmptyBorder(20, 200, 40, 70));
 		panel.setOpaque(false);
 		JLabel titulo=new JLabel(obra.getTitulo());
 		titulo.setFont(new Font ("myriad pro", Font.BOLD, 50));
@@ -190,7 +192,7 @@ public class SeccionObra extends JPanel implements PropertyChangeListener, Actio
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand().equals("nuevoComentario")) {
-			Date date = new Date(System.currentTimeMillis());
+			Timestamp date = new Timestamp(System.currentTimeMillis());
 			Comentario comentario = new Comentario(date, user.getNombre(), obra.getObraID(), cajaTexto.getText());
 			
 			obra.getListaComentarios().add(comentario);

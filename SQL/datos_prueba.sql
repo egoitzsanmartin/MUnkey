@@ -8,7 +8,7 @@ INSERT into usuario VALUES ('frogu', 'frogu', 'frogu@gmail.com', 'administrador'
 
 INSERT INTO obra VALUES (5,'Bad Miguel', '2020-05-17', 'portada.png', 'obra.pdf', 'terror', 'Español','frogi');  
 
-INSERT INTO obra VALUES (1, 'TITULO', '1981-11-17', 'foto.png', 'obra.pdf', 'terror', 'Swahili', 'froga');
+INSERT INTO obra VALUES (1, 'TITULO', '1981-11-17', 'foto.png', 'obras/obra.pdf', 'terror', 'Swahili', 'froga');
 INSERT INTO obra VALUES (2, 'El viaje de Daniel', '1981-11-19', 'foto.png',  'obra.pdf','comedia', 'Español', 'froge');
 INSERT INTO obra VALUES (3, 'El viaje de Unai', '1981-11-12', 'foto.png',  'obra.pdf','aventuras', 'Euskera', 'frogi');
 INSERT INTO obra VALUES (4, 'La increible historia de Pepito', '1981-11-11', 'foto.png', 'obra.pdf','superación', 'Inglés', 'frogu');

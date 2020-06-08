@@ -24,7 +24,8 @@ Connection con;
 public Conectar() {
 	try {
 		Class.forName("com.mysql.cj.jdbc.Driver");
-		con=DriverManager.getConnection("jdbc:mysql://localhost:3306/MUNKEY?userTimezone=true&serverTimezone=UTC","root","");
+		con=DriverManager.getConnection("jdbc:mysql://localhost:3306/MUNKEY?userTimezone=true&serverTimezone=UTC","root","1234");
+		//En el caso de la contraseña, hay que aplicar la que tiene el root.
 	}catch (Exception e) {
 		System.err.println("Error: "+e);
 	}
@@ -231,7 +232,7 @@ public List<Comentario> cargarDatosComentarios() {
 		while (rs.next()) {
 			String linea=(rs.getDate("Fsubida")+"$"+ rs.getString("autor")+"$"+  rs.getInt("obraID")+"$"+  rs.getString("descripcion"));
 			String [] valores = linea.split("[$]");
-			comentario=new Comentario(Date.valueOf(valores[0]),valores[1],Integer.valueOf(valores[2]), valores[3]);
+			comentario=new Comentario(Timestamp.valueOf(valores[0]),valores[1],Integer.valueOf(valores[2]), valores[3]);
 			System.out.println(comentario);	
 			listaComentarios.add(comentario);
 		}
