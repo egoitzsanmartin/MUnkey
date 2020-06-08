@@ -78,7 +78,7 @@ public class VisorLibro extends JPanel {
 	}
 	
 	private Component crearPanelCentro() {
-		String filePath="C:/Users/Unai/Desktop/pbl/Munkey 41/obras/"+obra.getPDF();
+		String filePath="obras/"+obra.getPDF();
 		SwingController controller = new SwingController();
 	    SwingViewBuilder factory = new SwingViewBuilder(controller);
 	    JPanel viewerComponentPanel = factory.buildViewerPanel();

@@ -7,9 +7,13 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.sql.Date;
 
 import javax.swing.BorderFactory;
-import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -24,25 +28,23 @@ import objetos.Like;
 import objetos.Likes;
 import objetos.Obra;
 import objetos.Usuario;
-import objetos.Usuarios;
+import sql.Conectar;
 
 
 
-public class SeccionObra extends JPanel {
-	String usuario;
-	Usuarios listaUsuarios;
-	JTextField cajaTexto;
+public class SeccionObra extends JPanel implements PropertyChangeListener, ActionListener {
 	
+	JTextField cajaTexto;
 	Controlador controlador;
-	RendererTexto rendererTexto;
-	DefaultListModel<Comentario> model;
-	JList<Comentario> listaTexto;
-	JScrollPane panelVisor;
-	JScrollPane panelChat;
+	RendererComentarios rendererComentario;
+	ModeloComentarios model;
+	JList<Comentario> listaComentarios;
+	JScrollPane panelComentarios;
 	Usuario user;
 	Obra obra;
 	Comentarios comentarios;
 	Likes likes;
+	Conectar conectar;
 	
 
 	public SeccionObra(Controlador controlador, Usuario user, Obra obra) {
@@ -50,9 +52,11 @@ public class SeccionObra extends JPanel {
 		this.controlador = controlador;
 		this.user=user;
 		this.obra=obra;
+		conectar = new Conectar();
 		this.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
-		model = new DefaultListModel<>();
-		listaTexto = new JList<>( model );
+		model = new ModeloComentarios(this, this.controlador, this.obra);
+		listaComentarios = new JList<>();
+		rendererComentario = new RendererComentarios(this.user.getNombre());
 		this.add(crearPanelCentro(), BorderLayout.CENTER);
 		this.add(panelAbajo(),BorderLayout.WEST);
 	}
@@ -142,7 +146,7 @@ public class SeccionObra extends JPanel {
 		panel.setOpaque(false);
 		cajaTexto = new JTextField(40);
 		JButton boton = new JButton(new ImageIcon("art/botones/enviar.png"));
-		boton.addActionListener(controlador);
+		boton.addActionListener(this);
 		boton.setActionCommand("nuevoComentario");
 		boton.setContentAreaFilled(false);
 		boton.setBorderPainted(false);
@@ -157,12 +161,11 @@ public class SeccionObra extends JPanel {
 	}
 
 	private Component crearPanelChat() {
-		JScrollPane panel = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		for(Comentario comentario:obra.getListaComentarios()) {
-			JLabel mensaje=new JLabel(comentario.getfSubida().toString()+" "+comentario.getAutor()+":\n"+comentario.getComentario());
-			panel.add(mensaje);
-		}
-		return panel;
+		panelComentarios = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		listaComentarios.setModel(model);
+		listaComentarios.setCellRenderer(rendererComentario);
+		panelComentarios.setViewportView(listaComentarios);
+		return panelComentarios;
 	}
 
 	
@@ -172,8 +175,31 @@ public class SeccionObra extends JPanel {
 		ImageIcon icon = new ImageIcon("art/fondo.png");
 		g.drawImage(icon.getImage(), 0, 0, this.getWidth(), this.getHeight(), this);
 	}
+	
 	public String leerMensaje(){
 		return cajaTexto.getText();
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent arg0) {
+		panelComentarios.revalidate();
+		this.repaint();
+		
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getActionCommand().equals("nuevoComentario")) {
+			Date date = new Date(System.currentTimeMillis());
+			Comentario comentario = new Comentario(date, user.getNombre(), obra.getObraID(), cajaTexto.getText());
+			
+			obra.getListaComentarios().add(comentario);
+			model.add(comentario);
+			conectar.guardarDatosComentario(comentario);
+			cajaTexto.setText("");
+			this.repaint();
+		}
+		
 	}
 
 }
