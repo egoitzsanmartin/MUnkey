@@ -1,0 +1,1 @@
+las obras y imagenes que se usan en la aplicación deben guardarse dentro de la carpeta obras

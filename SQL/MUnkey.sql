@@ -1,12 +1,15 @@
 DROP DATABASE IF EXISTS MUNKEY;
 CREATE DATABASE MUNKEY;
 
+DROP DATABASE IF EXISTS MUNKEY;
+CREATE DATABASE MUNKEY;
+
 USE MUNKEY;
 
 CREATE TABLE usuario (
  username    		VARCHAR(20),
  nombre           VARCHAR(20) NOT NULL,
- correo           VARCHAR(20) NOT NULL,
+ correo           VARCHAR(100) NOT NULL,
  tipo		         VARCHAR(50) NOT NULL,
  foto					VARCHAR(100),
  passwd				VARCHAR (100) NOT NULL, -- Se encripta en la aplicación de java
@@ -36,7 +39,7 @@ CREATE TABLE meGusta (
 );
 
 CREATE TABLE comentario (
- Fsubida          	DATE,
+ Fsubida          	DATETIME,
  descripcion			VARCHAR(300) NOT NULL,
  autor		         VARCHAR(20) NOT NULL,
  obraID		         SMALLINT UNSIGNED NOT NULL,
@@ -63,4 +66,5 @@ CREATE TABLE mensaje (
  CONSTRAINT MENSAJE_CONVERSACION_FK FOREIGN KEY (conversacionID) REFERENCES conversacion (conversacionID),
  CONSTRAINT COMENTARIO_PK PRIMARY KEY (autor,conversacionID, Fsubida)
 );
+
 

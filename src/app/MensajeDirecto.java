@@ -32,6 +32,7 @@ import sql.Conectar;
 public class MensajeDirecto extends JFrame implements ActionListener, ListSelectionListener, PropertyChangeListener {
 	String usuario;
 	Usuarios listaUsuarios;
+	boolean editorial;
 	JTextField cajaTexto;
 	ModeloChat modeloChat;
 	ModeloTexto modeloMensaje;
@@ -51,6 +52,11 @@ public class MensajeDirecto extends JFrame implements ActionListener, ListSelect
 		this.controlador = controlador;
 		conectar=new Conectar();
 		this.usuario = usuario.getNombre();
+		if(usuario.getTipo().equals("editorial")) {
+			this.editorial=true;
+		}else {
+			this.editorial=false;
+		}
 		this.listaUsuarios = listaUsuarios;
 		modeloChat = new ModeloChat(this, this.controlador, this.usuario);
 		modeloMensaje = new ModeloTexto(this, this.controlador, modeloChat);
@@ -117,8 +123,9 @@ public class MensajeDirecto extends JFrame implements ActionListener, ListSelect
 		panel.setBackground(new java.awt.Color(255, 251, 242, 255));
 		
 		panel.add(crearPanelConversaciones(), BorderLayout.CENTER);
+		if(editorial) {
 		panel.add(crearPanelBoton(), BorderLayout.SOUTH);
-		
+		}
 		return panel;
 	}
 	
@@ -145,7 +152,7 @@ public class MensajeDirecto extends JFrame implements ActionListener, ListSelect
 		if(e.getActionCommand().equals("Enviar")) {
 			Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 			Mensaje mensaje = new Mensaje(timestamp, usuario, modeloChat.getChats().get(listaChat.getSelectedIndex()).getConversacionID(), cajaTexto.getText());
-			
+			System.out.println(mensaje);
 			modeloMensaje.add(mensaje);
 			conectar.guardarDatosMensaje(mensaje);
 			modeloChat.getChats().get(listaChat.getSelectedIndex()).add(mensaje);

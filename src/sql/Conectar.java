@@ -230,7 +230,7 @@ public List<Comentario> cargarDatosComentarios() {
 		st=cn.con.createStatement();
 		rs=st.executeQuery("select * from comentario");
 		while (rs.next()) {
-			String linea=(rs.getDate("Fsubida")+"$"+ rs.getString("autor")+"$"+  rs.getInt("obraID")+"$"+  rs.getString("descripcion"));
+			String linea=(rs.getTimestamp("Fsubida")+"$"+ rs.getString("autor")+"$"+  rs.getInt("obraID")+"$"+  rs.getString("descripcion"));
 			String [] valores = linea.split("[$]");
 			comentario=new Comentario(Timestamp.valueOf(valores[0]),valores[1],Integer.valueOf(valores[2]), valores[3]);
 			System.out.println(comentario);	
